@@ -48,7 +48,6 @@ async def dream(
         max_model_len=max_model_len,
         gpu_memory_utilization=gpu_memory_utilization,
         kv_cache_dtype=kv_cache_dtype,
-        disable_log_requests=True,
     )
     engine = AsyncLLMEngine.from_engine_args(engine_args)
 
