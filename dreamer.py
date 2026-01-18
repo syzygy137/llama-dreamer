@@ -143,7 +143,7 @@ def main():
     parser.add_argument(
         "--max-tokens",
         type=int,
-        default=500_000,
+        default=470_000,
     )
     parser.add_argument(
         "--temperature",
@@ -158,7 +158,7 @@ def main():
     parser.add_argument(
         "--max-model-len",
         type=int,
-        default=524_288,
+        default=480_000,
     )
     parser.add_argument(
         "--gpu-memory-utilization",
