@@ -55,6 +55,7 @@ async def dream(
         temperature=temperature,
         max_tokens=max_tokens,
         skip_special_tokens=False,
+        ignore_eos=True,
     )
 
     print(f"Starting generation...")
