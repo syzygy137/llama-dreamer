@@ -19,6 +19,8 @@ async def dream(
     max_model_len: int,
     gpu_memory_utilization: float,
     kv_cache_dtype: str,
+    repetition_penalty: float,
+    seed_prompt: str,
 ):
     output_dir.mkdir(parents=True, exist_ok=True)
 
@@ -33,6 +35,8 @@ async def dream(
         "model": model,
         "max_tokens": max_tokens,
         "temperature": temperature,
+        "repetition_penalty": repetition_penalty,
+        "seed_prompt": seed_prompt,
         "max_model_len": max_model_len,
         "gpu_memory_utilization": gpu_memory_utilization,
         "kv_cache_dtype": kv_cache_dtype,
@@ -56,6 +60,7 @@ async def dream(
         max_tokens=max_tokens,
         skip_special_tokens=False,
         ignore_eos=True,
+        repetition_penalty=repetition_penalty,
     )
 
     print(f"Starting generation...")
@@ -73,7 +78,7 @@ async def dream(
          open(meta_file, "w", encoding="utf-8") as f_meta, \
          open(raw_file, "w", encoding="utf-8") as f_raw:
 
-        prompt = " "
+        prompt = seed_prompt
 
         async for output in engine.generate(prompt, params, request_id="dream"):
             generated = output.outputs[0].text
@@ -171,6 +176,15 @@ def main():
         default="auto",
         choices=["auto", "fp8", "fp8_e5m2", "fp8_e4m3"],
     )
+    parser.add_argument(
+        "--repetition-penalty",
+        type=float,
+        default=1.1,
+    )
+    parser.add_argument(
+        "--seed-prompt",
+        default=" ",
+    )
 
     args = parser.parse_args()
 
@@ -182,6 +196,8 @@ def main():
         max_model_len=args.max_model_len,
         gpu_memory_utilization=args.gpu_memory_utilization,
         kv_cache_dtype=args.kv_cache_dtype,
+        repetition_penalty=args.repetition_penalty,
+        seed_prompt=args.seed_prompt,
     ))
 
 
