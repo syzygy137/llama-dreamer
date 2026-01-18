@@ -48,7 +48,6 @@ async def dream(
         max_model_len=max_model_len,
         gpu_memory_utilization=gpu_memory_utilization,
         kv_cache_dtype=kv_cache_dtype,
-        chat_template="{{ bos_token }}",
     )
     engine = AsyncLLMEngine.from_engine_args(engine_args)
 
@@ -74,7 +73,7 @@ async def dream(
          open(meta_file, "w", encoding="utf-8") as f_meta, \
          open(raw_file, "w", encoding="utf-8") as f_raw:
 
-        prompt = ""
+        prompt = " "
 
         async for output in engine.generate(prompt, params, request_id="dream"):
             generated = output.outputs[0].text
