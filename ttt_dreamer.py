@@ -58,7 +58,7 @@ def run(args):
 
     model = AutoModelForCausalLM.from_pretrained(
         args.model,
-        torch_dtype=torch.bfloat16,
+        dtype=torch.bfloat16,
         device_map="auto",
         attn_implementation="sdpa",
     )
@@ -127,7 +127,7 @@ def run(args):
         for score in gen_output.scores:
             probs = torch.softmax(score[0].float(), dim=-1)
             log_probs = torch.log_softmax(score[0].float(), dim=-1)
-            entropy = -(probs * log_probs).sum().item()
+            entropy = -(probs * log_probs).nan_to_num(0.0).sum().item()
             token_entropies.append(entropy)
             top1_probs.append(probs.max().item())
 
