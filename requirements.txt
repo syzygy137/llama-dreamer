@@ -2,3 +2,5 @@ vllm>=0.6.0
 torch>=2.0.0
 transformers
 huggingface_hub
+peft>=0.7.0
+accelerate
