@@ -157,7 +157,8 @@ def run(args):
             output = model(input_ids=input_ids, labels=labels)
             loss_val = output.loss.item()
 
-            output.loss.backward()
+            train_loss = -output.loss if args.negative else output.loss
+            train_loss.backward()
 
             # Compute grad norm
             total_norm = 0.0
@@ -261,6 +262,7 @@ def main():
     parser.add_argument("--output-dir", type=str, default="outputs/")
     parser.add_argument("--checkpoint-every", type=int, default=100)
     parser.add_argument("--control", action="store_true", help="Skip training step (baseline comparison)")
+    parser.add_argument("--negative", action="store_true", help="Negate loss (train away from own output)")
     args = parser.parse_args()
     run(args)
 
